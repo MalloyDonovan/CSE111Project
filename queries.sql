@@ -1,8 +1,8 @@
 DROP TABLE gameData;
 DROP TABLE Games;
+DROP TABLE indieDevs;
 
 --CREATE TABLES
-
 
 CREATE TABLE gameData(
     gd_name VARCHAR(32) not null,
@@ -36,7 +36,13 @@ CREATE TABLE Games(
     g_releaseJP DATE not null
 );
 
-
+CREATE TABLE indieDevs(
+    ind_developer VARCHAR(32) not null,
+    ind_city VARCHAR(32) not null,
+    ind_autonomous_area VARCHAR(32) not null,
+    ind_country VARCHAR(32) not null,
+    ind_notes VARCHAR(64) not null,
+);
 
 --LOAD DATA, REPLACE WITH A DEDICATED SQLITE DATABASE LATER
 
@@ -45,7 +51,7 @@ CREATE TABLE Games(
 .headers off
 .import Data/games-data.csv gameData
 .import Data/games.csv Games
---.import indie-games-developers.csv indieDevs
+.import Data/indie-games-developers.csv indieDevs
 --.import PS4_GameSales.csv ps4Sales
 --.import Video_Games_Sales_as_at_22_Dec_2016.csv gameSales
 --.import video-games-developers.csv gameDevs

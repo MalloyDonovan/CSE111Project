@@ -1,6 +1,11 @@
 DROP TABLE gameData;
 DROP TABLE Games;
 DROP TABLE indieDevs;
+DROP TABLE ps4Sales;
+DROP TABLE gameSales;
+DROP TABLE gameDevs;
+DROP TABLE windowsGames;
+DROP TABLE xboxSales;
 
 --CREATE TABLES
 
@@ -44,6 +49,68 @@ CREATE TABLE indieDevs(
     ind_notes VARCHAR(64) not null,
 );
 
+CREATE TABLE ps4Sales(
+    ps4_game VARCHAR(32) not null,
+    ps4_year INTEGER(4) not null,
+    ps4_genre VARCHAR(32) not null,
+    ps4_publisher VARCHAR(32) not null,
+    ps4_NA DECIMAL(5,0) not null,
+    ps4_EU DECIMAL(5,0) not null,
+    ps4_JP DECIMAL(5,0) not null,
+    ps4_rest_world DECIMAL(5,0) not null,
+    ps4_global DECIMAL(5,0) not null
+);
+
+CREATE TABLE gameSales(
+    gs_name VARCHAR(32) not null,
+    gs_platform VARCHAR(32) not null,
+    gs_release_year INTEGER(4) not null,
+    gs_genre VARCHAR(32) not null,
+    gs_publisher VARCHAR(32) not null,
+    gs_NA_sales DECIMAL(5,0) not null,
+    gs_EU_sales DECIMAL(5,0) not null,
+    gs_JP_sales DECIMAL(5,0) not null,
+    gs_other_sales DECIMAL(5,0) not null,
+    gs_global_sales DECIMAL(5,0) not null,
+    gs_critic_score DECIMAL(5,0) not null,
+    gs_critic_count INTEGER(8) not null,
+    gs_user_score DECIMAL(5,0) not null,
+    gs_user_count INTEGER(8) not null,
+    gs_developer VARCHAR(32) not null,
+    gs_rating VARCHAR(4) not null,
+);
+
+CREATE TABLE gameDevs(
+    gdev_developer VARCHAR(32) not null,
+    gdev_city VARCHAR(32) not null,
+    gdev_administrative_division VARCHAR(32) not null,
+    gdev_country VARCHAR(32) not null,
+    gdev_est INTEGER(4) not null,
+    gdev_notable VARCHAR(32) not null,
+    gdev_notes VARCHAR(64) not null,
+);
+
+CREATE TABLE windowsGames(
+    wg_titles VARCHAR(32) not null,
+    wg_released INTEGER(4) not null,
+    wg_developer VARCHAR(32) not null,
+    wg_publisher VARCHAR(32) not null,
+    wg_genre VARCHAR(32) not null,
+);
+
+CREATE TABLE xboxSales(
+    xbox_pos INTEGER(3) not null,
+    xbox_game VARCHAR(32) not null,
+    xbox_year INTEGER(4) not null,
+    xbox_genre VARCHAR(32) not null,
+    xbox_publisher VARCHAR(32) not null,
+    xbox_NA DECIMAL(5,0) not null,
+    xbox_EU DECIMAL(5,0) not null,
+    xbox_JP DECIMAL(5,0) not null,
+    xbox_rest_world DECIMAL(5,0) not null,
+    xbox_global DECIMAL(5,0) not null
+);
+
 --LOAD DATA, REPLACE WITH A DEDICATED SQLITE DATABASE LATER
 
 .mode "csv"
@@ -52,11 +119,11 @@ CREATE TABLE indieDevs(
 .import Data/games-data.csv gameData
 .import Data/games.csv Games
 .import Data/indie-games-developers.csv indieDevs
---.import PS4_GameSales.csv ps4Sales
---.import Video_Games_Sales_as_at_22_Dec_2016.csv gameSales
---.import video-games-developers.csv gameDevs
---.import Windows_Games_List.csv windowsGames
---.import XboxOne_GameSales.csv xboxSales
+.import Data/PS4_GameSales.csv ps4Sales
+.import Data/Video_Games_Sales_as_at_22_Dec_2016.csv gameSales
+.import Data/video-games-developers.csv gameDevs
+.import Data/Windows_Games_List.csv windowsGames
+.import Data/XboxOne_GameSales.csv xboxSales
 
 
 --OUTPUT TO FILE (To be modified for cleaner outputs)

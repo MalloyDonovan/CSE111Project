@@ -46,7 +46,8 @@ CREATE TABLE indieDevs(
     ind_city VARCHAR(32) not null,
     ind_autonomous_area VARCHAR(32) not null,
     ind_country VARCHAR(32) not null,
-    ind_notes VARCHAR(64) not null,
+    ind_notable VARCHAR(64) not null,
+    ind_notes VARCHAR(128) not null
 );
 
 CREATE TABLE ps4Sales(
@@ -77,7 +78,7 @@ CREATE TABLE gameSales(
     gs_user_score DECIMAL(5,0) not null,
     gs_user_count INTEGER(8) not null,
     gs_developer VARCHAR(32) not null,
-    gs_rating VARCHAR(4) not null,
+    gs_rating VARCHAR(4) not null
 );
 
 CREATE TABLE gameDevs(
@@ -87,7 +88,7 @@ CREATE TABLE gameDevs(
     gdev_country VARCHAR(32) not null,
     gdev_est INTEGER(4) not null,
     gdev_notable VARCHAR(32) not null,
-    gdev_notes VARCHAR(64) not null,
+    gdev_notes VARCHAR(64) not null
 );
 
 CREATE TABLE windowsGames(
@@ -95,7 +96,7 @@ CREATE TABLE windowsGames(
     wg_released INTEGER(4) not null,
     wg_developer VARCHAR(32) not null,
     wg_publisher VARCHAR(32) not null,
-    wg_genre VARCHAR(32) not null,
+    wg_genre VARCHAR(32) not null
 );
 
 CREATE TABLE xboxSales(
@@ -119,7 +120,7 @@ CREATE TABLE xboxSales(
 .import Data/games-data.csv gameData
 .import Data/games.csv Games
 .import Data/indie-games-developers.csv indieDevs
-.import Data/PS4_GameSales.csv ps4Sales
+.import Data/PS4_GamesSales.csv ps4Sales
 .import Data/Video_Games_Sales_as_at_22_Dec_2016.csv gameSales
 .import Data/video-games-developers.csv gameDevs
 .import Data/Windows_Games_List.csv windowsGames
@@ -139,7 +140,6 @@ CREATE TABLE xboxSales(
 SELECT gd_name FROM gameData
 WHERE gd_platform = 'Wii'
 LIMIT 20;
-;
 
 .print "--------------------2---------------------"
 --2--
@@ -147,5 +147,11 @@ LIMIT 20;
 SELECT g_title FROM Games
 WHERE strftime('%Y', g_releaseNA) = '2000' AND g_mainStory > 30
 LIMIT 20;
+
+.print "--------------------3---------------------"
+--3--
+
+SELECT * FROM gameDevs
+WHERE gdev_developer = 'Blizzard Entertainment';
 
 

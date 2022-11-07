@@ -63,22 +63,22 @@ CREATE TABLE ps4Sales(
 );
 
 CREATE TABLE gameSales(
-    gs_name VARCHAR(32) not null,
-    gs_platform VARCHAR(32) not null,
-    gs_release_year INTEGER(4) not null,
-    gs_genre VARCHAR(32) not null,
-    gs_publisher VARCHAR(32) not null,
-    gs_NA_sales DECIMAL(5,0) not null,
-    gs_EU_sales DECIMAL(5,0) not null,
-    gs_JP_sales DECIMAL(5,0) not null,
-    gs_other_sales DECIMAL(5,0) not null,
-    gs_global_sales DECIMAL(5,0) not null,
-    gs_critic_score DECIMAL(5,0) not null,
-    gs_critic_count INTEGER(8) not null,
-    gs_user_score DECIMAL(5,0) not null,
-    gs_user_count INTEGER(8) not null,
-    gs_developer VARCHAR(32) not null,
-    gs_rating VARCHAR(4) not null
+    gs_name VARCHAR(32) null,
+    gs_platform VARCHAR(32) null,
+    gs_release_year INTEGER(4) null,
+    gs_genre VARCHAR(32) null,
+    gs_publisher VARCHAR(32) null,
+    gs_NA_sales DECIMAL(5,0) null,
+    gs_EU_sales DECIMAL(5,0) null,
+    gs_JP_sales DECIMAL(5,0) null,
+    gs_other_sales DECIMAL(5,0) null,
+    gs_global_sales DECIMAL(5,0) null,
+    gs_critic_score DECIMAL(5,0) null,
+    gs_critic_count INTEGER(8) null,
+    gs_user_score DECIMAL(5,0) null,
+    gs_user_count INTEGER(8) null,
+    gs_developer VARCHAR(32) null,
+    gs_rating VARCHAR(4) null
 );
 
 CREATE TABLE gameDevs(
@@ -136,12 +136,15 @@ CREATE TABLE xboxSales(
 --EXECUTE QUERIES (Examples, not Final)
 
 .print "--------------------1---------------------"
+.print "SELECT"
 --1--
+
 SELECT gd_name FROM gameData
 WHERE gd_platform = 'Wii'
 LIMIT 20;
 
 .print "--------------------2---------------------"
+.print "SELECT"
 --2--
 
 SELECT g_title FROM Games
@@ -149,9 +152,80 @@ WHERE strftime('%Y', g_releaseNA) = '2000' AND g_mainStory > 30
 LIMIT 20;
 
 .print "--------------------3---------------------"
+.print "SELECT"
 --3--
 
 SELECT * FROM gameDevs
 WHERE gdev_developer = 'Blizzard Entertainment';
 
+.print "--------------------4---------------------"
+.print "SELECT"
+--4--
 
+SELECT gs_name, gs_platform, gs_release_year FROM gameSales
+WHERE gs_publisher = 'Nintendo' AND gs_release_year > '2000'
+LIMIT 30;
+
+.print "--------------------5---------------------"
+.print "SELECT"
+--5--
+
+SELECT gdev_developer FROM gameDevs
+WHERE gdev_city = 'Tokyo'
+LIMIT 30;
+
+.print "--------------------6---------------------"
+.print "UPDATE"
+--6--
+
+SELECT * FROM windowsGames
+WHERE wg_developer = 'Mojang';
+
+UPDATE windowsGames
+SET wg_titles = 'MINECRAFT IS GREAT'
+WHERE wg_titles = 'Minecraft';
+
+SELECT * FROM windowsGames
+WHERE wg_developer = 'Mojang';
+
+.print "--------------------7---------------------"
+.print "INSERT"
+--7--
+
+INSERT INTO gameSales (gs_name, gs_platform, gs_release_year, gs_genre, gs_publisher)
+VALUES ('Pokemon Violet/Pokemon Scarlet','Switch','2022','Role-Playing','Nintendo');
+
+SELECT * FROM gameSales
+WHERE gs_name = 'Pokemon Violet/Pokemon Scarlet';
+
+.print "--------------------8---------------------"
+.print "SELECT"
+--8--
+
+SELECT g_title FROM Games, gameData
+WHERE g_title = gd_name AND gd_users > 10000
+LIMIT 30;
+
+.print "--------------------9---------------------"
+.print ""
+--9--
+
+
+
+
+
+
+
+
+
+
+--Mostly like should have all delete statements near the end
+--so they don't affect the other statements
+
+.print "--------------------10---------------------"
+.print "DELETE"
+.print "All COD games from Games table"
+--10--
+
+DELETE FROM Games
+WHERE g_title = 'Call Of Duty%'

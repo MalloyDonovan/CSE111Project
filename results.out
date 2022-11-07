@@ -1,4 +1,5 @@
 --------------------1---------------------
+SELECT
 Super Mario Galaxy
 Super Mario Galaxy 2
 The Legend of Zelda: Twilight Princess
@@ -20,6 +21,7 @@ DJ Hero 2
 Tiger Woods PGA Tour 10
 Art of Balance
 --------------------2---------------------
+SELECT
 Action Man: Raid on Island X
 Age of Empires II: The Conquerors
 Animorphs
@@ -41,4 +43,97 @@ Combat Flight Simulator 2: WWII Pacific Theater
 Combat Mission: Beyond Overlord
 Contender 2
 --------------------3---------------------
+SELECT
 Blizzard Entertainment|Irvine|California|United States|1991|Diablo seriesStarCraft seriesWarcraft seriesHearthstoneHeroes of the StormOverwatch|Developer/publisher; acquired by Vivendi and became part of Vivendi Games group in 1998; merged into Activision Blizzard in 2008
+--------------------4---------------------
+SELECT
+Wii Sports|Wii|2006
+Mario Kart Wii|Wii|2008
+Wii Sports Resort|Wii|2009
+New Super Mario Bros.|DS|2006
+Wii Play|Wii|2006
+New Super Mario Bros. Wii|Wii|2009
+Nintendogs|DS|2005
+Mario Kart DS|DS|2005
+Wii Fit|Wii|2007
+Wii Fit Plus|Wii|2009
+Brain Age: Train Your Brain in Minutes a Day|DS|2005
+Pokemon Diamond/Pokemon Pearl|DS|2006
+Pokemon Ruby/Pokemon Sapphire|GBA|2002
+Brain Age 2: More Training in Minutes a Day|DS|2005
+Pokemon Black/Pokemon White|DS|2010
+Pokemon X/Pokemon Y|3DS|2013
+Super Smash Bros. Brawl|Wii|2008
+Mario Kart 7|3DS|2011
+Animal Crossing: Wild World|DS|2005
+Pokemon HeartGold/Pokemon SoulSilver|DS|2009
+Pokemon Omega Ruby/Pokemon Alpha Sapphire|3DS|2014
+Super Mario Galaxy|Wii|2007
+Super Mario 3D Land|3DS|2011
+Pokemon FireRed/Pokemon LeafGreen|GBA|2004
+Super Mario 64|DS|2004
+New Super Mario Bros. 2|3DS|2012
+Animal Crossing: New Leaf|3DS|2012
+Mario Party DS|DS|2007
+Wii Party|Wii|2010
+Mario Party 8|Wii|2007
+--------------------5---------------------
+SELECT
+0verflow
+1-Up Studio
+AlphaDream
+Ambrella
+Amusement Vision
+AQ Interactive
+Arika
+Art Co., Ltd
+ArtePiazza
+Atlus
+Bauhaus Entertainment
+B.B. Studio
+Camelot Software Planning
+Cattle Call
+Cavia
+Climax Entertainment
+Compile Heart
+Creatures
+Culture Brain Excel
+Crea-Tech
+CyberStep
+Cygames
+DeNA
+Eighting
+Epics
+Examu
+feelplus
+FromSoftware
+FuRyu
+Genius Sonority
+--------------------6---------------------
+UPDATE
+Minecraft|2011|Mojang|Mojang|Adventure
+MINECRAFT IS GREAT|2011|Mojang|Mojang|Adventure
+--------------------7---------------------
+INSERT
+Pokemon Violet/Pokemon Scarlet|Switch|2022|Role-Playing|Nintendo|||||||||||
+--------------------8---------------------
+SELECT
+The Legend of Zelda: Breath of the Wild
+Red Dead Redemption 2
+Half-Life 2
+The Last of Us
+The Last of Us Remastered
+The Elder Scrolls V: Skyrim
+The Witcher 3: Wild Hunt
+Uncharted 4: A Thief's End
+Bloodborne
+The Witcher 3: Wild Hunt
+Dota 2
+Counter-Strike: Source
+Ghost of Tsushima
+Death Stranding
+--------------------9---------------------
+
+--------------------10---------------------
+DELETE
+All COD games from Games table

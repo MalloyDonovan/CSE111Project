@@ -193,8 +193,28 @@ INSERT
 Pokemon Violet/Pokemon Scarlet|Switch|2022|Role-Playing|Nintendo|||||||||||
 --------------------12---------------------
 INSERT
+Print information on '3D Ultra MiniGolf Adventures 2' if it exists:
 
-Traveller's Tales|Lego series
+Insert title and then print:
+3D Ultra MiniGolf Adventures 2|2006-12-20|Wanako Studios|Sierra On-Line|Sports
+--------------------13---------------------
+INSERT
+Type-Moon|Tokyo||Japan|1998|Fate/stay night|
+--------------------19---------------------
+DELETE
+All Games without entries in the gameData table 
+Abarenbou Princess
+Abobo's Big Adventure
+Abuse
+Quake Mission Pack: Abyss Of Pandemonium
+Rock Band Track Pack: AC/DC Live
+Ace Combat 3: Electrosphere
+Ace Combat: Assault Horizon - Enhanced Edition
+Ace of Aces
+Aces of the Pacific
+Achievement Unlocked
+
+Delete and print
 --------------------20---------------------
 DELETE
 All COD games from Games table

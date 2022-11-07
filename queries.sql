@@ -273,34 +273,61 @@ WHERE gs_name = 'Pokemon Violet/Pokemon Scarlet';
 .print "INSERT"
 --12--
 
+.print "Print information on '3D Ultra MiniGolf Adventures 2' if it exists:"
 
-/*
-SELECT g_title FROM Games
-WHERE g_developers = 'Traveller''s Tales'
-
-SELECT gdev_developer, gdev_notable FROM gameDevs
-WHERE gdev_developer = 'Traveller''s Tales';
-
-INSERT INTO gameDevs(gdev_notable)
-SELECT g_title FROM Games
-WHERE g_developers = 'Traveller''s Tales'
-LIMIT 1;
+SELECT * FROM windowsGames
+WHERE wg_titles = '3D Ultra MiniGolf Adventures 2';
 
 .print ""
+.print "Insert title and then print:"
 
-SELECT gdev_developer, gdev_notable FROM gameDevs
-WHERE gdev_developer = 'Traveller''s Tales';
-*/
+INSERT INTO windowsGames(wg_titles, wg_released, wg_developer, wg_publisher, wg_genre)
+SELECT g_title, g_releaseNA, g_developers, g_publishers, g_genres FROM Games
+WHERE g_title NOT IN (SELECT wg_titles FROM windowsGames) AND g_platforms LIKE '%PC';
 
+SELECT * FROM windowsGames
+WHERE wg_titles = '3D Ultra MiniGolf Adventures 2';
 
+.print "--------------------13---------------------"
+.print "INSERT"
+--13--
 
+SELECT * FROM gameDevs
+WHERE gdev_developer = 'Type-Moon';
 
+INSERT INTO gameDevs(gdev_developer, gdev_city, gdev_administrative_division, gdev_country, gdev_est, gdev_notable)
+VALUES ('Type-Moon', 'Tokyo', '', 'Japan', '1998', (SELECT g_title FROM Games WHERE g_developers = 'Type-Moon' LIMIT 1));
 
+SELECT * FROM gameDevs
+WHERE gdev_developer = 'Type-Moon';
 
 
 
 --Mostly like should have all delete statements near the end
 --so they don't affect the other statements
+
+
+.print "--------------------19---------------------"
+.print "DELETE"
+.print "All Games without entries in the gameData table "
+--19--
+
+
+SELECT g_title FROM GAMES
+WHERE g_title NOT IN(SELECT gd_name FROM gameData)
+LIMIT 10 OFFSET 100;
+
+.print ""
+.print "Delete and print"
+DELETE FROM GAMES
+WHERE g_title NOT IN(SELECT gd_name FROM gameData);
+
+SELECT g_title FROM GAMES
+WHERE g_title NOT IN(SELECT gd_name FROM gameData)
+LIMIT 10;
+
+
+
 
 .print "--------------------20---------------------"
 .print "DELETE"

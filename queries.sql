@@ -50,18 +50,6 @@ CREATE TABLE indieDevs(
     ind_notes VARCHAR(128) not null
 );
 
-CREATE TABLE ps4Sales(
-    ps4_game VARCHAR(32) not null,
-    ps4_year INTEGER(4) not null,
-    ps4_genre VARCHAR(32) not null,
-    ps4_publisher VARCHAR(32) not null,
-    ps4_NA DECIMAL(5,0) not null,
-    ps4_EU DECIMAL(5,0) not null,
-    ps4_JP DECIMAL(5,0) not null,
-    ps4_rest_world DECIMAL(5,0) not null,
-    ps4_global DECIMAL(5,0) not null
-);
-
 CREATE TABLE gameSales(
     gs_name VARCHAR(32) null,
     gs_platform VARCHAR(32) null,
@@ -88,7 +76,8 @@ CREATE TABLE gameDevs(
     gdev_country VARCHAR(32) not null,
     gdev_est INTEGER(4) not null,
     gdev_notable VARCHAR(32) not null,
-    gdev_notes VARCHAR(64) not null
+    --CONTAINTS NULL VALUES
+    gdev_notes VARCHAR(64)
 );
 
 CREATE TABLE windowsGames(
@@ -98,6 +87,7 @@ CREATE TABLE windowsGames(
     wg_publisher VARCHAR(32) not null,
     wg_genre VARCHAR(32) not null
 );
+
 
 CREATE TABLE xboxSales(
     xbox_pos INTEGER(3) not null,
@@ -112,6 +102,18 @@ CREATE TABLE xboxSales(
     xbox_global DECIMAL(5,0) not null
 );
 
+CREATE TABLE ps4Sales(
+    ps4_game VARCHAR(32) not null,
+    ps4_year INTEGER(4) not null,
+    ps4_genre VARCHAR(32) not null,
+    ps4_publisher VARCHAR(32) not null,
+    ps4_NA DECIMAL(5,0) not null,
+    ps4_EU DECIMAL(5,0) not null,
+    ps4_JP DECIMAL(5,0) not null,
+    ps4_rest_world DECIMAL(5,0) not null,
+    ps4_global DECIMAL(5,0) not null
+);
+
 --LOAD DATA, REPLACE WITH A DEDICATED SQLITE DATABASE LATER
 
 .mode "csv"
@@ -120,10 +122,10 @@ CREATE TABLE xboxSales(
 .import Data/games-data.csv gameData
 .import Data/games.csv Games
 .import Data/indie-games-developers.csv indieDevs
-.import Data/PS4_GamesSales.csv ps4Sales
 .import Data/Video_Games_Sales_as_at_22_Dec_2016.csv gameSales
 .import Data/video-games-developers.csv gameDevs
 .import Data/Windows_Games_List.csv windowsGames
+.import Data/PS4_GamesSales.csv ps4Sales
 .import Data/XboxOne_GameSales.csv xboxSales
 
 
@@ -174,9 +176,18 @@ SELECT gdev_developer FROM gameDevs
 WHERE gdev_city = 'Tokyo'
 LIMIT 30;
 
+
 .print "--------------------6---------------------"
-.print "UPDATE"
+.print "SELECT"
 --6--
+
+SELECT g_title FROM Games, gameData
+WHERE g_title = gd_name AND gd_users > 10000
+LIMIT 30;
+
+.print "--------------------7---------------------"
+.print "UPDATE"
+--7--
 
 SELECT * FROM windowsGames
 WHERE wg_developer = 'Mojang';
@@ -188,9 +199,68 @@ WHERE wg_titles = 'Minecraft';
 SELECT * FROM windowsGames
 WHERE wg_developer = 'Mojang';
 
-.print "--------------------7---------------------"
+.print "--------------------8---------------------"
+.print "UPDATE"
+--8--
+SELECT g_title, g_platforms, g_publishers FROM Games
+WHERE g_publishers = 'Microsoft Game Studios' AND g_platforms LIKE 'Xbox%'
+LIMIT 5;
+
+UPDATE Games
+SET g_publishers = 'Xbox Game Studios'
+WHERE g_publishers = 'Microsoft Game Studios' AND g_platforms LIKE 'Xbox%';
+
+.print ""
+
+SELECT g_title, g_platforms, g_publishers FROM Games
+WHERE g_publishers = 'Xbox Game Studios' AND g_platforms LIKE 'Xbox%'
+LIMIT 5;
+
+
+.print "--------------------9---------------------"
+--9--
+.print "UPDATE"
+SELECT g_title, gd_uscore FROM Games, gameData
+WHERE g_title = gd_name AND gd_users < 10 AND g_mainStory < 10 AND gd_uscore != 'tbd'
+LIMIT 10;
+
+UPDATE gameData
+SET gd_uscore = Round(gd_uscore)
+WHERE gd_name IN ( 
+    SELECT g_title FROM Games, gameData 
+    WHERE g_title = gd_name AND gd_users < 10 AND g_mainStory < 10 AND gd_uscore != 'tbd'
+    LIMIT 10);
+
+.print ""
+
+SELECT g_title, gd_uscore FROM Games, gameData
+WHERE g_title = gd_name AND gd_users < 10 AND g_mainStory < 10 AND gd_uscore != 'tbd'
+LIMIT 10;
+
+
+
+.print "--------------------10---------------------"
+.print "UPDATE"
+--10--
+
+SELECT gd_name, gd_genre FROM gameData
+WHERE gd_genre LIKE '%Role-Playing%' 
+LIMIT 10;
+
+UPDATE gameData
+SET gd_genre = 'RPG'
+WHERE gd_genre LIKE '%Role-Playing%'
+LIMIT 10;
+
+.print ""
+
+SELECT gd_name, gd_genre FROM gameData
+WHERE gd_genre LIKE '%RPG%'
+LIMIT 10;
+
+.print "--------------------11---------------------"
 .print "INSERT"
---7--
+--11--
 
 INSERT INTO gameSales (gs_name, gs_platform, gs_release_year, gs_genre, gs_publisher)
 VALUES ('Pokemon Violet/Pokemon Scarlet','Switch','2022','Role-Playing','Nintendo');
@@ -198,19 +268,29 @@ VALUES ('Pokemon Violet/Pokemon Scarlet','Switch','2022','Role-Playing','Nintend
 SELECT * FROM gameSales
 WHERE gs_name = 'Pokemon Violet/Pokemon Scarlet';
 
-.print "--------------------8---------------------"
-.print "SELECT"
---8--
 
-SELECT g_title FROM Games, gameData
-WHERE g_title = gd_name AND gd_users > 10000
-LIMIT 30;
+.print "--------------------12---------------------"
+.print "INSERT"
+--12--
 
-.print "--------------------9---------------------"
+
+/*
+SELECT g_title FROM Games
+WHERE g_developers = 'Traveller''s Tales'
+
+SELECT gdev_developer, gdev_notable FROM gameDevs
+WHERE gdev_developer = 'Traveller''s Tales';
+
+INSERT INTO gameDevs(gdev_notable)
+SELECT g_title FROM Games
+WHERE g_developers = 'Traveller''s Tales'
+LIMIT 1;
+
 .print ""
---9--
 
-
+SELECT gdev_developer, gdev_notable FROM gameDevs
+WHERE gdev_developer = 'Traveller''s Tales';
+*/
 
 
 
@@ -222,10 +302,26 @@ LIMIT 30;
 --Mostly like should have all delete statements near the end
 --so they don't affect the other statements
 
-.print "--------------------10---------------------"
+.print "--------------------20---------------------"
 .print "DELETE"
 .print "All COD games from Games table"
---10--
+--20--
+
+.print "PRINT FIRST"
+
+SELECT g_title FROM Games
+WHERE g_title LIKE 'Call Of Duty%'
+LIMIT 5;
 
 DELETE FROM Games
-WHERE g_title = 'Call Of Duty%'
+WHERE g_title LIKE 'Call Of Duty%';
+
+.print ""
+.print "DELETED!!! PRINT AGAIN"
+
+
+SELECT g_title FROM Games
+WHERE g_title LIKE 'Call Of Duty%';
+
+.print ""
+.print "END"

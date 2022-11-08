@@ -51,7 +51,7 @@ CREATE TABLE indieDevs(
 );
 
 CREATE TABLE gameSales(
-    gs_name VARCHAR(32) null,
+    gs_name VARCHAR(32) not null,
     gs_platform VARCHAR(32) null,
     gs_release_year INTEGER(4) null,
     gs_genre VARCHAR(32) null,
@@ -72,12 +72,12 @@ CREATE TABLE gameSales(
 CREATE TABLE gameDevs(
     gdev_developer VARCHAR(32) not null,
     gdev_city VARCHAR(32) not null,
-    gdev_administrative_division VARCHAR(32) not null,
-    gdev_country VARCHAR(32) not null,
-    gdev_est INTEGER(4) not null,
-    gdev_notable VARCHAR(32) not null,
-    --CONTAINTS NULL VALUES
-    gdev_notes VARCHAR(64)
+    gdev_administrative_division VARCHAR(32) null,
+    gdev_country VARCHAR(32) null,
+    gdev_est INTEGER(4) null,
+    gdev_notable VARCHAR(32) null,
+    --CONTAINS NULL VALUES
+    gdev_notes VARCHAR(64) null
 );
 
 CREATE TABLE windowsGames(
@@ -145,6 +145,7 @@ SELECT gd_name FROM gameData
 WHERE gd_platform = 'Wii'
 LIMIT 20;
 
+
 .print "--------------------2---------------------"
 .print "SELECT"
 --2--
@@ -153,12 +154,14 @@ SELECT g_title FROM Games
 WHERE strftime('%Y', g_releaseNA) = '2000' AND g_mainStory > 30
 LIMIT 20;
 
+
 .print "--------------------3---------------------"
 .print "SELECT"
 --3--
 
 SELECT * FROM gameDevs
 WHERE gdev_developer = 'Blizzard Entertainment';
+
 
 .print "--------------------4---------------------"
 .print "SELECT"
@@ -167,6 +170,7 @@ WHERE gdev_developer = 'Blizzard Entertainment';
 SELECT gs_name, gs_platform, gs_release_year FROM gameSales
 WHERE gs_publisher = 'Nintendo' AND gs_release_year > '2000'
 LIMIT 30;
+
 
 .print "--------------------5---------------------"
 .print "SELECT"
@@ -185,9 +189,21 @@ SELECT g_title FROM Games, gameData
 WHERE g_title = gd_name AND gd_users > 10000
 LIMIT 30;
 
+
 .print "--------------------7---------------------"
-.print "UPDATE"
+.print "SELECT"
 --7--
+
+.print "Action games that are on both Xbox and PS4"
+
+SELECT xbox_game FROM xboxSales, ps4Sales
+WHERE xbox_game = ps4_game AND ps4_genre = 'Action'
+LIMIT 30;
+
+
+.print "--------------------8---------------------"
+.print "UPDATE"
+--8--
 
 SELECT * FROM windowsGames
 WHERE wg_developer = 'Mojang';
@@ -199,9 +215,11 @@ WHERE wg_titles = 'Minecraft';
 SELECT * FROM windowsGames
 WHERE wg_developer = 'Mojang';
 
-.print "--------------------8---------------------"
+
+.print "--------------------9---------------------"
 .print "UPDATE"
---8--
+--9--
+
 SELECT g_title, g_platforms, g_publishers FROM Games
 WHERE g_publishers = 'Microsoft Game Studios' AND g_platforms LIKE 'Xbox%'
 LIMIT 5;
@@ -217,8 +235,9 @@ WHERE g_publishers = 'Xbox Game Studios' AND g_platforms LIKE 'Xbox%'
 LIMIT 5;
 
 
-.print "--------------------9---------------------"
---9--
+.print "--------------------10---------------------"
+--10--
+
 .print "UPDATE"
 SELECT g_title, gd_uscore FROM Games, gameData
 WHERE g_title = gd_name AND gd_users < 10 AND g_mainStory < 10 AND gd_uscore != 'tbd'
@@ -238,10 +257,9 @@ WHERE g_title = gd_name AND gd_users < 10 AND g_mainStory < 10 AND gd_uscore != 
 LIMIT 10;
 
 
-
-.print "--------------------10---------------------"
+.print "--------------------11---------------------"
 .print "UPDATE"
---10--
+--11--
 
 SELECT gd_name, gd_genre FROM gameData
 WHERE gd_genre LIKE '%Role-Playing%' 
@@ -249,20 +267,20 @@ LIMIT 10;
 
 UPDATE gameData
 SET gd_genre = 'RPG'
-WHERE gd_genre LIKE '%Role-Playing%'
---operation is expensive so reduced for time sake
-LIMIT 10;
+WHERE gd_genre LIKE '%Role-Playing%' AND gd_date > 'December 31, 2010' ;
+--operation is expensive so reduced for time sake--
 
 .print ""
 
 SELECT gd_name, gd_genre FROM gameData
-WHERE gd_genre LIKE '%RPG%'
+WHERE gd_genre LIKE '%RPG%' AND gd_date > 'December 31, 2010' 
 LIMIT 10;
 
 
-.print "--------------------11---------------------"
+.print "--------------------12---------------------"
 .print "UPDATE"
---11--
+--12--
+
 SELECT ind_developer, ind_notes FROM indieDevs
 WHERE ind_notes = ''
 LIMIT 5;
@@ -278,9 +296,9 @@ WHERE ind_notes = 'No Description Available'
 LIMIT 5;
 
 
-.print "--------------------12---------------------"
+.print "--------------------13---------------------"
 .print "INSERT"
---12--
+--13--
 
 INSERT INTO gameSales (gs_name, gs_platform, gs_release_year, gs_genre, gs_publisher)
 VALUES ('Pokemon Violet/Pokemon Scarlet','Switch','2022','Role-Playing','Nintendo');
@@ -289,9 +307,9 @@ SELECT * FROM gameSales
 WHERE gs_name = 'Pokemon Violet/Pokemon Scarlet';
 
 
-.print "--------------------13---------------------"
+.print "--------------------14---------------------"
 .print "INSERT"
---13--
+--14--
 
 .print "Print information on '3D Ultra MiniGolf Adventures 2' if it exists:"
 
@@ -308,9 +326,10 @@ WHERE g_title NOT IN (SELECT wg_titles FROM windowsGames) AND g_platforms LIKE '
 SELECT * FROM windowsGames
 WHERE wg_titles = '3D Ultra MiniGolf Adventures 2';
 
-.print "--------------------14---------------------"
+
+.print "--------------------15---------------------"
 .print "INSERT"
---14--
+--15--
 
 SELECT * FROM gameDevs
 WHERE gdev_developer = 'Type-Moon';
@@ -322,6 +341,15 @@ SELECT * FROM gameDevs
 WHERE gdev_developer = 'Type-Moon';
 
 
+.print "--------------------16---------------------"
+.print "INSERT"
+--16--
+
+INSERT INTO indieDevs (ind_developer, ind_city, ind_autonomous_area, ind_country, ind_notable, ind_notes)
+VALUES ('Blendo Games', 'Culver City','', 'United States', 'Gravity Bones', '');
+
+SELECT * FROM indieDevs
+WHERE ind_developer = 'Blendo Games';
 
 
 --Mostly like should have all delete statements near the end
@@ -348,7 +376,6 @@ WHERE g_title = gd_name AND g_publishers = 'Activision'
 LIMIT 10;
 
 
-
 .print "--------------------18---------------------"
 .print "DELETE"
 --18--
@@ -372,7 +399,6 @@ WHERE g_title IN (SELECT gs_name FROM gameSales WHERE gs_NA_sales < 10000);
 .print "All Games without entries in the gameData table "
 --19--
 
-
 SELECT g_title FROM GAMES
 WHERE g_title NOT IN(SELECT gd_name FROM gameData)
 LIMIT 10 OFFSET 100;
@@ -385,8 +411,6 @@ WHERE g_title NOT IN(SELECT gd_name FROM gameData);
 SELECT g_title FROM GAMES
 WHERE g_title NOT IN(SELECT gd_name FROM gameData)
 LIMIT 10;
-
-
 
 
 .print "--------------------20---------------------"
@@ -405,7 +429,6 @@ WHERE g_title LIKE 'Call Of Duty%';
 
 .print ""
 .print "DELETED!!! PRINT AGAIN"
-
 
 SELECT g_title FROM Games
 WHERE g_title LIKE 'Call Of Duty%';

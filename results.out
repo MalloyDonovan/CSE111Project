@@ -126,10 +126,43 @@ Counter-Strike: Source
 Ghost of Tsushima
 Death Stranding
 --------------------7---------------------
+SELECT
+Action games that are on both Xbox and PS4
+Grand Theft Auto V
+Monster Hunter: World
+Assassin's Creed: Unity
+Batman: Arkham Knight
+Assassin's Creed Origins
+Far Cry 5
+Assassin's Creed Syndicate
+Watch Dogs 2
+Resident Evil VII: Biohazard
+Middle-Earth: Shadow of Mordor
+Metal Gear Solid V: The Phantom Pain
+Dying Light
+Middle-Earth: Shadow of War
+Dishonored 2
+Lego Marvel Super Heroes
+The Evil Within
+For Honor
+Dragon Ball: Xenoverse 2
+Mad Max (2013)
+LEGO Dimensions
+LEGO Jurassic World
+LEGO Marvel Super Heroes 2
+The Evil Within II
+LEGO Marvel's Avengers
+Lego Batman 3: Beyond Gotham
+Fortnite
+Thief 4
+Disney Infinity 3.0
+ARK: Survival Evolved
+Assassin's Creed The Ezio Collection
+--------------------8---------------------
 UPDATE
 Minecraft|2011|Mojang|Mojang|Adventure
 MINECRAFT IS GREAT|2011|Mojang|Mojang|Adventure
---------------------8---------------------
+--------------------9---------------------
 UPDATE
 Aegis Wing|Xbox 360|Microsoft Game Studios
 Amped 2|Xbox|Microsoft Game Studios
@@ -142,7 +175,7 @@ Amped 2|Xbox|Xbox Game Studios
 Amped: Freestyle Snowboarding|Xbox|Xbox Game Studios
 Azurik: Rise of Perathia|Xbox|Xbox Game Studios
 Banjo-Kazooie: Nuts & Bolts|Xbox 360, Xbox One|Xbox Game Studios
---------------------9---------------------
+--------------------10---------------------
 UPDATE
 Tony Hawk's Pro Skater 3|7
 Aggressive Inline|8
@@ -165,7 +198,7 @@ ChuChu Rocket!|7
 FAR: Lone Sails|5
 Colin McRae Rally 2005|8
 Super Hydorah|7
---------------------10---------------------
+--------------------11---------------------
 UPDATE
 Mass Effect 2|Role-Playing,Action RPG,Action RPG
 The Elder Scrolls V: Skyrim|Role-Playing,First-Person,First-Person,Western-Style
@@ -185,10 +218,10 @@ Persona 5 Royal|RPG
 The Elder Scrolls V: Skyrim|RPG
 Final Fantasy IX|RPG
 Mass Effect 2|RPG
-Chrono Cross|RPG
 Mass Effect 2|RPG
 The Elder Scrolls IV: Oblivion|RPG
---------------------11---------------------
+The Elder Scrolls IV: Oblivion|RPG
+--------------------12---------------------
 UPDATE
 11 bit studios|
 ACE Team|
@@ -201,18 +234,21 @@ ACE Team|No Description Available
 Akupara Games|No Description Available
 Alec Holowka|No Description Available
 Alientrap|No Description Available
---------------------12---------------------
+--------------------13---------------------
 INSERT
 Pokemon Violet/Pokemon Scarlet|Switch|2022|Role-Playing|Nintendo|||||||||||
---------------------13---------------------
+--------------------14---------------------
 INSERT
 Print information on '3D Ultra MiniGolf Adventures 2' if it exists:
 
 Insert title and then print:
 3D Ultra MiniGolf Adventures 2|2006-12-20|Wanako Studios|Sierra On-Line|Sports
---------------------14---------------------
+--------------------15---------------------
 INSERT
 Type-Moon|Tokyo||Japan|1998|Fate/stay night|
+--------------------16---------------------
+INSERT
+Blendo Games|Culver City||United States|Gravity Bones|
 --------------------17---------------------
 DELETE
 Titles published by Activision with a Critic score less than 70

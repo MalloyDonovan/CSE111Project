@@ -194,10 +194,10 @@ LIMIT 30;
 .print "SELECT"
 --7--
 
-.print "Action games that are on both Xbox and PS4"
+.print "Action games that are on both Xbox and PS4 published by Acivision"
 
-SELECT xbox_game FROM xboxSales, ps4Sales
-WHERE xbox_game = ps4_game AND ps4_genre = 'Action'
+SELECT Distinct xbox_game, gs_rating FROM xboxSales, ps4Sales, gameSales
+WHERE xbox_game = ps4_game AND ps4_genre = 'Action' AND ps4_game = gs_name AND gs_publisher = 'Activision'
 LIMIT 30;
 
 

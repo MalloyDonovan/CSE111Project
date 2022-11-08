@@ -141,8 +141,10 @@ CREATE TABLE ps4Sales(
 .print "SELECT"
 --1--
 
-SELECT gd_name FROM gameData
-WHERE gd_platform = 'Wii'
+SELECT gd_name, g_mainStory, gs_NA_sales FROM gameData
+INNER JOIN Games ON gd_name = g_title
+INNER JOIN gameSales ON gs_name = gd_name
+WHERE gs_platform = 'Wii' AND gd_platform = 'Wii' AND g_mainStory > 10 AND g_mainStory != '' AND gs_NA_sales > 2 --(millions)
 LIMIT 20;
 
 

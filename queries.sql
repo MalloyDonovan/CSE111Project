@@ -161,8 +161,13 @@ LIMIT 20;
 .print "SELECT"
 --3--
 
-SELECT * FROM gameDevs
-WHERE gdev_developer = 'Blizzard Entertainment';
+SELECT gdev_developer, COUNT(g_title) || ' titles' FROM gameDevs
+INNER JOIN Games ON g_developers = gdev_developer
+INNER JOIN gameData ON gd_name = g_title
+WHERE gd_score > 80
+GROUP BY gdev_developer
+HAVING COUNT(g_title) > 20;
+
 
 
 .print "--------------------4---------------------"

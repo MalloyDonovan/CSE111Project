@@ -189,30 +189,82 @@ Chrono Cross|RPG
 Mass Effect 2|RPG
 The Elder Scrolls IV: Oblivion|RPG
 --------------------11---------------------
+UPDATE
+11 bit studios|
+ACE Team|
+Akupara Games|
+Alec Holowka|
+Alientrap|
+
+11 bit studios|No Description Available
+ACE Team|No Description Available
+Akupara Games|No Description Available
+Alec Holowka|No Description Available
+Alientrap|No Description Available
+--------------------12---------------------
 INSERT
 Pokemon Violet/Pokemon Scarlet|Switch|2022|Role-Playing|Nintendo|||||||||||
---------------------12---------------------
+--------------------13---------------------
 INSERT
 Print information on '3D Ultra MiniGolf Adventures 2' if it exists:
 
 Insert title and then print:
 3D Ultra MiniGolf Adventures 2|2006-12-20|Wanako Studios|Sierra On-Line|Sports
---------------------13---------------------
+--------------------14---------------------
 INSERT
 Type-Moon|Tokyo||Japan|1998|Fate/stay night|
+--------------------17---------------------
+DELETE
+Titles published by Activision with a Critic score less than 70
+007 Legends|PlayStation3|41
+007 Legends|Xbox360|45
+Angry Birds Trilogy|3DS|62
+Angry Birds Trilogy|PlayStation3|66
+Angry Birds Trilogy|Xbox360|63
+Apache: Air Assault|PC|64
+Apache: Air Assault|PlayStation3|66
+Apache: Air Assault|Xbox360|70
+Bakugan Battle Brawlers|PlayStation3|63
+Bakugan Battle Brawlers|Wii|62
+
+Delete and print
+Bloody Roar 3|PlayStation2|71
+Blur|PC|81
+Blur|PlayStation3|81
+Blur|Xbox360|82
+Call of Duty|PC|91
+Call of Duty 2|PC|86
+Call of Duty 2|Xbox360|89
+Call of Duty 2: Big Red One|GameCube|76
+Call of Duty 2: Big Red One|PlayStation2|77
+Call of Duty 2: Big Red One|Xbox|78
+--------------------18---------------------
+DELETE
+.hack//Link
+007 Racing
+100 All-Time Favorites
+101-in-1 Explosive Megamix
+15 Days
+18 Wheeler: American Pro Trucker
+1942
+2010 FIFA World Cup South Africa
+24: The Game
+3D Dot Game Heroes
+
+Delete and print
 --------------------19---------------------
 DELETE
 All Games without entries in the gameData table 
-Abarenbou Princess
-Abobo's Big Adventure
-Abuse
-Quake Mission Pack: Abyss Of Pandemonium
-Rock Band Track Pack: AC/DC Live
-Ace Combat 3: Electrosphere
-Ace Combat: Assault Horizon - Enhanced Edition
-Ace of Aces
-Aces of the Pacific
-Achievement Unlocked
+Adagio
+Adam's Venture - Episode 1: The Search for the Lost Garden
+Adam's Venture - Episode 2: Solomon's Secret
+Adam's Venture - Episode 3: Revelations
+Addams Family Values
+Advanced Dungeons & Dragons: Heroes of the Lance
+Advanced Dungeons & Dragons: Slayer
+Adventure (1979)
+Adventure Apes and the Mayan Mystery
+Adventure Bar Story
 
 Delete and print
 --------------------20---------------------
@@ -220,10 +272,10 @@ DELETE
 All COD games from Games table
 PRINT FIRST
 Call of Duty
-Call of Duty 2
 Call of Duty 2: Big Red One
-Call of Duty 3
-Call of Duty 4: Modern Warfare
+Call of Duty: Modern Warfare - Reflex Edition
+Call of Duty: Modern Warfare - Mobilized
+Call of Duty: United Offensive
 
 DELETED!!! PRINT AGAIN
 

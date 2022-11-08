@@ -250,6 +250,7 @@ LIMIT 10;
 UPDATE gameData
 SET gd_genre = 'RPG'
 WHERE gd_genre LIKE '%Role-Playing%'
+--operation is expensive so reduced for time sake
 LIMIT 10;
 
 .print ""
@@ -258,9 +259,28 @@ SELECT gd_name, gd_genre FROM gameData
 WHERE gd_genre LIKE '%RPG%'
 LIMIT 10;
 
+
 .print "--------------------11---------------------"
-.print "INSERT"
+.print "UPDATE"
 --11--
+SELECT ind_developer, ind_notes FROM indieDevs
+WHERE ind_notes = ''
+LIMIT 5;
+
+UPDATE indieDevs
+SET ind_notes = 'No Description Available'
+WHERE ind_notes = '';
+
+.print ""
+
+SELECT ind_developer, ind_notes FROM indieDevs
+WHERE ind_notes = 'No Description Available'
+LIMIT 5;
+
+
+.print "--------------------12---------------------"
+.print "INSERT"
+--12--
 
 INSERT INTO gameSales (gs_name, gs_platform, gs_release_year, gs_genre, gs_publisher)
 VALUES ('Pokemon Violet/Pokemon Scarlet','Switch','2022','Role-Playing','Nintendo');
@@ -269,9 +289,9 @@ SELECT * FROM gameSales
 WHERE gs_name = 'Pokemon Violet/Pokemon Scarlet';
 
 
-.print "--------------------12---------------------"
+.print "--------------------13---------------------"
 .print "INSERT"
---12--
+--13--
 
 .print "Print information on '3D Ultra MiniGolf Adventures 2' if it exists:"
 
@@ -288,9 +308,9 @@ WHERE g_title NOT IN (SELECT wg_titles FROM windowsGames) AND g_platforms LIKE '
 SELECT * FROM windowsGames
 WHERE wg_titles = '3D Ultra MiniGolf Adventures 2';
 
-.print "--------------------13---------------------"
+.print "--------------------14---------------------"
 .print "INSERT"
---13--
+--14--
 
 SELECT * FROM gameDevs
 WHERE gdev_developer = 'Type-Moon';
@@ -303,8 +323,48 @@ WHERE gdev_developer = 'Type-Moon';
 
 
 
+
 --Mostly like should have all delete statements near the end
 --so they don't affect the other statements
+
+.print "--------------------17---------------------"
+.print "DELETE"
+.print "Titles published by Activision with a Critic score less than 70"
+--17--
+
+SELECT g_title, gd_platform, gd_score FROM Games, gameData
+WHERE g_title = gd_name AND g_publishers = 'Activision'
+LIMIT 10;
+
+DELETE FROM Games
+WHERE g_title IN (SELECT gd_name FROM gameDATA WHERE gd_score < 70)
+      AND g_publishers = 'Activision';
+
+.print ""
+.print "Delete and print"
+
+SELECT g_title, gd_platform, gd_score FROM Games, gameData
+WHERE g_title = gd_name AND g_publishers = 'Activision'
+LIMIT 10;
+
+
+
+.print "--------------------18---------------------"
+.print "DELETE"
+--18--
+
+SELECT g_title FROM Games
+WHERE g_title IN (SELECT gs_name FROM gameSales WHERE gs_NA_sales < 10000)
+LIMIT 10;
+
+DELETE FROM Games 
+WHERE g_title IN (SELECT gs_name FROM gameSales WHERE gs_NA_sales < 10000);
+
+.print ""
+.print "Delete and print"
+
+SELECT g_title FROM Games
+WHERE g_title IN (SELECT gs_name FROM gameSales WHERE gs_NA_sales < 10000);
 
 
 .print "--------------------19---------------------"

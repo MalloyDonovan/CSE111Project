@@ -141,10 +141,11 @@ CREATE TABLE ps4Sales(
 .print "SELECT"
 --1--
 
-SELECT gdev_developer, SUM(gd_users) FROM gameDevs, games, gamedata
-WHERE gdev_developer = g_developers AND g_title = gd_name
-GROUP BY gdev_developer
-LIMIT 30;
+SELECT gd_name, g_mainStory, gs_NA_sales FROM gameData
+INNER JOIN Games ON gd_name = g_title
+INNER JOIN gameSales ON gs_name = gd_name
+WHERE gs_platform = 'Wii' AND gd_platform = 'Wii' AND g_mainStory > 10 AND g_mainStory != '' AND gs_NA_sales > 2 --(millions)
+LIMIT 20;
 
 
 .print "--------------------2---------------------"

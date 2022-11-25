@@ -192,9 +192,10 @@ LIMIT 30;
 .print "SELECT"
 --6--
 
-SELECT g_title FROM Games, gameData
-WHERE g_title = gd_name AND gd_users > 10000
-LIMIT 30;
+SELECT gdev_developer, SUM(gd_users) FROM gameDevs, games, gamedata
+WHERE gdev_developer = g_developers AND g_title = gd_name
+GROUP BY gdev_developer
+LIMIT 35;
 
 
 .print "--------------------7---------------------"

@@ -65,20 +65,21 @@ def checkCred(event):
     if entryCred.get() == 'password':
        entryCred.pack_forget()
        confirmCred.pack_forget()
-       adminMessage.pack()
-       signOut.pack()
+       signOut.pack(fill=tk.Y, side="bottom", anchor="sw")
+       adminMessage.pack(fill=tk.Y, side="bottom", anchor="sw")
+
        
 
 
 def signInProc(event):
     signIn.pack_forget()
     entryCred.pack()
-    confirmCred.pack()
+    confirmCred.pack(side="top", anchor="s")
 
 def signOutProc(event):
     adminMessage.pack_forget()
     signOut.pack_forget()
-    signIn.pack()
+    signIn.pack(fill=tk.Y, side="bottom", anchor="sw")
 
     
 
@@ -87,6 +88,7 @@ def signOutProc(event):
 #Creates Tkinter window
 window = tk.Tk()
 window.resizable(width=True, height=True)
+window.geometry("960x540")
 results = tk.Label(text="Video game database")
 adminMessage = tk.Label(text="Welcome system administrator!")
 
@@ -124,9 +126,9 @@ confirmCred = tk.Button(
 
 entryCred = tk.Entry(fg="white", bg="black", width=50)
 
-results.pack()
-button.pack()
-signIn.pack()
+results.pack(fill=tk.Y, side="right", anchor="e")
+button.pack(fill=tk.Y, side="top", anchor = "nw")
+signIn.pack(fill=tk.Y, side="bottom", anchor="sw")
 
 
 button.bind("<Button-1>", handle_click)

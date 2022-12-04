@@ -2,6 +2,9 @@ import tkinter as tk
 import sqlite3
 from sqlite3 import Error
 
+searchingGames = False
+searchingDevs = False
+
 def openConnection(_dbFile):
     print("++++++++++++++++++++++++++++++++++")
     print("Open database: ", _dbFile)
@@ -33,75 +36,30 @@ def closeConnection(_conn, _dbFile):
 def search(_conn):
     _conn.execute("BEGIN")
     try:
-        input = entrySearch.get()
-        sql = ''' 
-                SELECT g_title FROM Games
-                WHERE g_title LIKE '%{}%'
-                LIMIT 8 OFFSET {};
-            '''.format(input, Offset)
-        _conn.execute(sql)
-        cur = _conn.cursor()
-        cur.execute(sql)
-        rows = cur.fetchall()
+        if searchingGames == True:
+            input = entrySearch.get()
+            sql = ''' 
+                    SELECT g_title FROM Games
+                    WHERE g_title LIKE '%{}%'
+                    LIMIT 8 OFFSET {};
+                '''.format(input, Offset)
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingDevs == True:
+            input = entrySearch.get()
+            sql = ''' 
+                    SELECT gdev_developer FROM gameDevs
+                    WHERE gdev_developer LIKE '%{}%'
+                    LIMIT 8 OFFSET {};
+                '''.format(input, Offset)
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
         ###ASSIGN QUERY RESULTS TO LABEL
-        results["text"] = '\n'.join(''.join(tup) for tup in rows)
-       
-        if 0 <= 0 < len(results["text"].split('\n')):
-            result1.grid(row=0, column=3)
-            result1["text"] = results["text"].split('\n')[0]
 
-        if 0 <= 1 < len(results["text"].split('\n')):
-            result2.grid(row=0, column=4)
-            result2["text"] = results["text"].split('\n')[1]
-
-        if 0 <= 2 < len(results["text"].split('\n')):
-            result3.grid(row=1, column=3)
-            result3["text"] = results["text"].split('\n')[2]
-
-        if 0 <= 3 < len(results["text"].split('\n')):
-            result4.grid(row=1, column=4)
-            result4["text"] = results["text"].split('\n')[3]
-
-        if 0 <= 4 < len(results["text"].split('\n')):
-            result5.grid(row=2, column=3)
-            result5["text"] = results["text"].split('\n')[4]
-
-        if 0 <= 5 < len(results["text"].split('\n')):
-            result6.grid(row=2, column=4)
-            result6["text"] = results["text"].split('\n')[5]
-
-        if 0 <= 6 < len(results["text"].split('\n')):
-            result7.grid(row=3, column=3)
-            result7["text"] = results["text"].split('\n')[6]
-
-        if 0 <= 7 < len(results["text"].split('\n')):
-            result8.grid(row=3, column=4)
-            result8["text"] = results["text"].split('\n')[7]
-            leftPage.grid(row=4, column=3)
-            rightPage.grid(row=4, column=4)
-
-
-        _conn.execute("COMMIT")
-        print("success")
-    except Error as e:
-        _conn.execute("ROLLBACK")
-        print(e)
-
-
-def search1(_conn):
-    _conn.execute("BEGIN")
-    try:
-        input = entrySearch.get()
-        sql = ''' 
-                SELECT gdev_developer FROM gameDevs
-                WHERE gdev_developer LIKE '%{}%'
-                LIMIT 8 OFFSET {};
-            '''.format(input, Offset)
-        _conn.execute(sql)
-        cur = _conn.cursor()
-        cur.execute(sql)
-        rows = cur.fetchall()
-        ###ASSIGN QUERY RESULTS TO LABEL
         results["text"] = '\n'.join(''.join(tup) for tup in rows)
        
         if 0 <= 0 < len(results["text"].split('\n')):
@@ -148,14 +106,24 @@ def search1(_conn):
 def details(_conn):
     _conn.execute("BEGIN")
     try:
-        sql = ''' 
-                SELECT * FROM GAMES
-                WHERE g_title = '{}'
-            '''.format(result1["text"])
-        _conn.execute(sql)
-        cur = _conn.cursor()
-        cur.execute(sql)
-        rows = cur.fetchall()
+        if searchingGames == True:
+            sql = ''' 
+                    SELECT * FROM games
+                    WHERE g_title = '{}'
+                '''.format(result1["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingDevs == True:
+            sql = ''' 
+                    SELECT * FROM gameDevs
+                    WHERE gdev_developer = '{}'
+                '''.format(result1["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
 
         detailsDisplay["text"] = rows
 
@@ -175,8 +143,10 @@ def details(_conn):
 
 ###Search related methods##########################################
 
-def handle_click_search(event):
+def handle_games_search(event):
     global Offset
+    global searchingGames 
+    searchingGames = True
     Offset = 0
     entrySearch.delete(0, 20)
     entrySearch.grid(row=0, column=1, padx=5, sticky="n")
@@ -185,16 +155,17 @@ def handle_click_search(event):
     leftPage.grid_remove()
     rightPage.grid_remove()
 
-def handle_click_search1(event):
+def handle_dev_search(event):
     global Offset
+    global searchingDevs
+    searchingDevs = True
     Offset = 0
     entrySearch.delete(0, 20)
     entrySearch.grid(row=0, column=1, padx=5, sticky="n")
-    confirmSearch1.grid(row=0, column=2, sticky="nw")
+    confirmSearch.grid(row=0, column=2, sticky="nw")
     clearResults()
     leftPage.grid_remove()
     rightPage.grid_remove()
-    
 
 def executeSearch(event):
     database = r"videogames.db"
@@ -203,14 +174,6 @@ def executeSearch(event):
     closeConnection(conn, database)
     entrySearch.grid_forget()
     confirmSearch.grid_forget()
-
-def executeSearch1(event):
-    database = r"videogames.db"
-    conn = openConnection(database)
-    search1(conn)
-    closeConnection(conn, database)
-    entrySearch.grid_forget()
-    confirmSearch1.grid_forget()
 
 def incrementOffset(event):
     global Offset
@@ -338,8 +301,8 @@ signIn.grid(row=4, column = 0)
 searchButton.grid(row=0, column=0)
 searchDev.grid(row=1,column=0)
 
-searchButton.bind("<Button-1>", handle_click_search)
-searchDev.bind("<Button-1>", handle_click_search1)
+searchButton.bind("<Button-1>", handle_games_search)
+searchDev.bind("<Button-1>", handle_dev_search)
 
 
 signIn.bind("<Button-1>", signInProc)
@@ -348,7 +311,6 @@ signOut.bind("<Button-1>", signOutProc)
 
 confirmCred.bind("<Button-1>", checkCred)
 confirmSearch.bind("<Button-1>", executeSearch)
-confirmSearch1.bind("<Button-1>", executeSearch1)
 
 leftPage.bind("<Button-1>", decrementOffset)
 rightPage.bind("<Button-1>", incrementOffset)

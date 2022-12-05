@@ -5,7 +5,7 @@ from sqlite3 import Error
 searchingData = False
 searchingDevs = False
 searchingGames = False
-loggedin = True
+loggedin = False
 
 
 def openConnection(_dbFile):

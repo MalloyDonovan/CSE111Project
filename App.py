@@ -151,6 +151,7 @@ def details(_conn):
         detailsDisplay["text"] = rows
 
         #Remove not relevant items, add a back button later
+        inspectBackbtn.grid(row=0, column=1)
         clearResults()
         leftPage.grid_remove()
         rightPage.grid_remove()
@@ -227,12 +228,13 @@ def executeSearch(event):
 
 def incrementOffset(event):
     global Offset
-    Offset += 8
-    clearResults()
-    database = r"videogames.db"
-    conn = openConnection(database)
-    search(conn)
-    closeConnection(conn, database)
+    if 0 <= 7 < len(results["text"].split('\n')):
+        Offset += 8
+        clearResults()
+        database = r"videogames.db"
+        conn = openConnection(database)
+        search(conn)
+        closeConnection(conn, database)
 
 def decrementOffset(event):
     global Offset
@@ -249,6 +251,11 @@ def inspect(event):
         conn = openConnection(database)
         details(conn)
         closeConnection(conn, database)
+
+def inspect_back(event):
+    inspectBackbtn.grid_remove()
+    detailsDisplay.grid_remove()
+    executeSearch(event)
 
 def clearResults():
     result1.grid_remove()
@@ -290,6 +297,11 @@ def signOutProc(event):
 
 
 
+
+
+####################################################################
+
+
 #Global Variables
 
 Offset = 0
@@ -326,6 +338,7 @@ result5 = tk.Button(width=25, height=5, bg="white")
 result6 = tk.Button(width=25, height=5, bg="white")
 result7 = tk.Button(width=25, height=5, bg="white")
 result8 = tk.Button(width=25, height=5, bg="white")
+inspectBackbtn = tk.Button(text = "Back", width=10, height=2, bg="white")
 
 leftPage = tk.Button(text = "<-", width=10, height=2, bg="white")
 rightPage = tk.Button(text = "->", width=10, height=2, bg="white")
@@ -378,5 +391,6 @@ result5.bind("<Button-1>", inspect)
 result6.bind("<Button-1>", inspect)
 result7.bind("<Button-1>", inspect)
 result8.bind("<Button-1>", inspect)
+inspectBackbtn.bind("<Button-1>", inspect_back)
 
 window.mainloop()

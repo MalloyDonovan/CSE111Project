@@ -4,6 +4,8 @@ from sqlite3 import Error
 
 searchingGames = False
 searchingDevs = False
+searchingData = False
+loggedin = False
 
 def openConnection(_dbFile):
     print("++++++++++++++++++++++++++++++++++")
@@ -52,6 +54,17 @@ def search(_conn):
             sql = ''' 
                     SELECT gdev_developer FROM gameDevs
                     WHERE gdev_developer LIKE '%{}%'
+                    LIMIT 8 OFFSET {};
+                '''.format(input, Offset)
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingData == True:
+            input = entrySearch.get()
+            sql = ''' 
+                    SELECT gd_name FROM gameData
+                    WHERE gd_name LIKE '%{}%'
                     LIMIT 8 OFFSET {};
                 '''.format(input, Offset)
             _conn.execute(sql)
@@ -124,6 +137,15 @@ def details(_conn):
             cur = _conn.cursor()
             cur.execute(sql)
             rows = cur.fetchall()
+        elif searchingData == True:
+            sql = ''' 
+                    SELECT * FROM gameData
+                    WHERE gd_name = '{}'
+                '''.format(result1["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
 
         detailsDisplay["text"] = rows
 
@@ -144,6 +166,7 @@ def details(_conn):
 ###Search related methods##########################################
 
 def handle_games_search(event):
+    detailsDisplay.grid_remove()
     global Offset
     global searchingGames 
     searchingGames = True
@@ -156,9 +179,23 @@ def handle_games_search(event):
     rightPage.grid_remove()
 
 def handle_dev_search(event):
+    detailsDisplay.grid_remove()
     global Offset
     global searchingDevs
     searchingDevs = True
+    Offset = 0
+    entrySearch.delete(0, 20)
+    entrySearch.grid(row=0, column=1, padx=5, sticky="n")
+    confirmSearch.grid(row=0, column=2, sticky="nw")
+    clearResults()
+    leftPage.grid_remove()
+    rightPage.grid_remove()
+
+def handle_data_search(event):
+    detailsDisplay.grid_remove()
+    global Offset
+    global searchingData
+    searchingData = True
     Offset = 0
     entrySearch.delete(0, 20)
     entrySearch.grid(row=0, column=1, padx=5, sticky="n")
@@ -217,11 +254,13 @@ def clearResults():
 
 def checkCred(event):
     if entryCred.get() == 'password':
-       entryCred.delete(0, 20)
-       entryCred.grid_forget()
-       confirmCred.grid_forget()
-       signOut.grid(row=4, column=0)
-       adminMessage.grid(row=3, column =0, sticky = "s")
+        global loggedin
+        loggedin = True
+        entryCred.delete(0, 20)
+        entryCred.grid_forget()
+        confirmCred.grid_forget()
+        signOut.grid(row=4, column=0)
+        adminMessage.grid(row=3, column =0, sticky = "s")
      
 def signInProc(event):
     signIn.grid_forget()
@@ -245,6 +284,7 @@ Offset = 0
 #Creates Tkinter window
 
 window = tk.Tk()
+window.title("Game Database Search")
 window.resizable(False, False)
 window.columnconfigure([0, 1, 2, 3, 4], minsize=160)
 window.rowconfigure([0, 1, 2, 3, 4], minsize=90)
@@ -262,8 +302,8 @@ signOut = tk.Button( text="Sign out", width=25, height=5, bg="white")
 confirmCred = tk.Button(text="Confirm", width=25, height=5, bg="white")
 searchButton = tk.Button(text="Search for title",width=25,height=5, bg="white")
 searchDev = tk.Button(text="Search for developer",width=25,height=5, bg="white")
+searchdata = tk.Button(text="Retrieve game data",width=25,height=5, bg="white")
 confirmSearch = tk.Button(text="Confirm", width=10, height=2, bg="white")
-confirmSearch1 = tk.Button(text="Confirm", width=10, height=2, bg="white")
 
 result1 = tk.Button(width=25, height=5, bg="white")
 result2 = tk.Button(width=25, height=5, bg="white")
@@ -300,9 +340,11 @@ rightPage.grid(row=4, column=4)
 signIn.grid(row=4, column = 0)
 searchButton.grid(row=0, column=0)
 searchDev.grid(row=1,column=0)
+searchdata.grid(row=2,column=0)
 
 searchButton.bind("<Button-1>", handle_games_search)
 searchDev.bind("<Button-1>", handle_dev_search)
+searchdata.bind("<Button-1>", handle_data_search)
 
 
 signIn.bind("<Button-1>", signInProc)

@@ -2,10 +2,11 @@ import tkinter as tk
 import sqlite3
 from sqlite3 import Error
 
-searchingGames = False
-searchingDevs = False
 searchingData = False
+searchingDevs = False
+searchingGames = False
 loggedin = False
+
 
 def openConnection(_dbFile):
     print("++++++++++++++++++++++++++++++++++")
@@ -169,7 +170,11 @@ def handle_games_search(event):
     detailsDisplay.grid_remove()
     global Offset
     global searchingGames 
+    global searchingDevs
+    global searchingData
     searchingGames = True
+    searchingDevs = False
+    searchingData = False
     Offset = 0
     entrySearch.delete(0, 20)
     entrySearch.grid(row=0, column=1, padx=5, sticky="n")
@@ -181,8 +186,12 @@ def handle_games_search(event):
 def handle_dev_search(event):
     detailsDisplay.grid_remove()
     global Offset
+    global searchingGames 
     global searchingDevs
+    global searchingData
+    searchingGames = False
     searchingDevs = True
+    searchingData = False
     Offset = 0
     entrySearch.delete(0, 20)
     entrySearch.grid(row=0, column=1, padx=5, sticky="n")
@@ -194,7 +203,11 @@ def handle_dev_search(event):
 def handle_data_search(event):
     detailsDisplay.grid_remove()
     global Offset
+    global searchingGames 
+    global searchingDevs
     global searchingData
+    searchingGames = False
+    searchingDevs = False
     searchingData = True
     Offset = 0
     entrySearch.delete(0, 20)

@@ -5,7 +5,7 @@ from sqlite3 import Error
 searchingData = False
 searchingDevs = False
 searchingGames = False
-loggedin = False
+loggedin = True
 
 
 def openConnection(_dbFile):
@@ -122,9 +122,9 @@ def details(_conn):
     try:
         if searchingGames == True:
             sql = ''' 
-                    SELECT * FROM games
+                    SELECT * FROM Games
                     WHERE g_title = '{}'
-                '''.format(result1["text"])
+                '''.format(temporaryString["text"])
             _conn.execute(sql)
             cur = _conn.cursor()
             cur.execute(sql)
@@ -133,7 +133,7 @@ def details(_conn):
             sql = ''' 
                     SELECT * FROM gameDevs
                     WHERE gdev_developer = '{}'
-                '''.format(result1["text"])
+                '''.format(temporaryString["text"])
             _conn.execute(sql)
             cur = _conn.cursor()
             cur.execute(sql)
@@ -142,7 +142,7 @@ def details(_conn):
             sql = ''' 
                     SELECT * FROM gameData
                     WHERE gd_name = '{}'
-                '''.format(result1["text"])
+                '''.format(temporaryString["text"])
             _conn.execute(sql)
             cur = _conn.cursor()
             cur.execute(sql)
@@ -151,12 +151,106 @@ def details(_conn):
         detailsDisplay["text"] = rows
 
         #Remove not relevant items, add a back button later
+        if loggedin == True:                
+            deleteEntry.grid(row=4, column = 2)
+            updateEntry.grid(row=4, column = 1)
         inspectBackbtn.grid(row=0, column=1)
         clearResults()
         leftPage.grid_remove()
         rightPage.grid_remove()
 
         detailsDisplay.grid(row=2, column=2)
+
+        _conn.execute("COMMIT")
+        print("success")
+    except Error as e:
+        _conn.execute("ROLLBACK")
+        print(e)
+
+def deleteDB(_conn):
+    _conn.execute("BEGIN")
+    try:
+        if searchingGames == True:
+            sql = ''' 
+                    Delete FROM Games
+                    WHERE g_title = '{}'
+                '''.format(temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingDevs == True:
+            sql = ''' 
+                    DELETE FROM gameDevs
+                    WHERE gdev_developer = '{}'
+                '''.format(temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingData == True:
+            sql = ''' 
+                    DELETE FROM gameData
+                    WHERE gd_name = '{}'
+                '''.format(temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+
+        detailsDisplay["text"] = rows
+
+        clearResults()
+        leftPage.grid_remove()
+        rightPage.grid_remove()
+        updateEntry.grid_remove()
+        deleteEntry.grid_remove()
+        inspectBackbtn.grid_remove()
+        detailsDisplay.grid_remove()
+        
+
+        _conn.execute("COMMIT")
+        print("success")
+    except Error as e:
+        _conn.execute("ROLLBACK")
+        print(e)
+
+def updateDB(_conn):
+    try:
+        if searchingGames == True:
+            sql = ''' 
+                    UPDATE Games
+                    SET {} = '{}'
+                    WHERE g_title = '{}'
+                '''.format(toModify.get(), theModification.get(), temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingDevs == True:
+            sql = ''' 
+                    UPDATE gameDevs
+                    SET {} = '{}'
+                    WHERE gdev_developer = '{}'
+                '''.format(toModify.get(), theModification.get(), temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+        elif searchingData == True:
+            sql = ''' 
+                    UPDATE gameData
+                    SET {} = '{}'
+                    WHERE gd_name = '{}'
+                '''.format(toModify.get(), theModification.get(), temporaryString["text"])
+            _conn.execute(sql)
+            cur = _conn.cursor()
+            cur.execute(sql)
+            rows = cur.fetchall()
+
+            toModify.delete(0, 20)
+            theModification.delete(0, 20)
+    
 
         _conn.execute("COMMIT")
         print("success")
@@ -249,12 +343,14 @@ def decrementOffset(event):
 def inspect(event):
         database = r"videogames.db"
         conn = openConnection(database)
+        temporaryString["text"] = event.widget["text"]
         details(conn)
         closeConnection(conn, database)
 
 def inspect_back(event):
     inspectBackbtn.grid_remove()
     detailsDisplay.grid_remove()
+    deleteEntry.grid_remove()
     executeSearch(event)
 
 def clearResults():
@@ -281,6 +377,7 @@ def checkCred(event):
         confirmCred.grid_forget()
         signOut.grid(row=4, column=0)
         adminMessage.grid(row=3, column =0, sticky = "s")
+
      
 def signInProc(event):
     signIn.grid_forget()
@@ -291,6 +388,52 @@ def signOutProc(event):
     adminMessage.grid_forget()
     signOut.grid_forget()
     signIn.grid(row=4, column=0)
+
+
+def listColumns(event):
+        if searchingGames == True:
+            toBeModified["text"] = "Enter catrgory to modify: \n g_title \n g_genres"
+
+        elif searchingDevs == True:
+            toBeModified["text"] = "Enter catrgory to modify: \n gdev_developer \n gdev_city"
+
+        elif searchingData == True:
+            toBeModified["text"] = "Enter catrgory to modify: \n gd_name \n gd_platform"
+
+        toBeModified.grid(row=2, column =2)
+        toModify.grid(row=3, column=2)
+        toModifyBtn.grid(row=4, column=2)
+        
+        clearResults()
+        leftPage.grid_remove()
+        rightPage.grid_remove()
+        updateEntry.grid_remove()
+        deleteEntry.grid_remove()
+        inspectBackbtn.grid_remove()
+        detailsDisplay.grid_remove()
+
+def promptModification(event):
+    toModify.grid_forget()
+    toModifyBtn.grid_remove()
+    toBeModified["text"] = "Enter modification"
+    theModification.grid(row=3, column=2)
+    theModificationBtn.grid(row=4, column=2)
+
+def updateProcess(event):
+        theModification.grid_forget()
+        theModificationBtn.grid_remove()
+        toBeModified.grid_remove()
+        database = r"videogames.db"
+        conn = openConnection(database)
+        updateDB(conn)
+        closeConnection(conn, database)
+
+def deleteProcess(event):
+        database = r"videogames.db"
+        conn = openConnection(database)
+        deleteDB(conn)
+        closeConnection(conn, database)
+
 
 ##################################################################
     
@@ -316,15 +459,26 @@ window.rowconfigure([0, 1, 2, 3, 4], minsize=90)
 
 results = tk.Label(text="Video game database")
 adminMessage = tk.Label(text="Welcome system administrator!")
+
+temporaryString = tk.Label()
 detailsDisplay = tk.Label()
+toBeModified = tk.Label()
 
 entryCred = tk.Entry(bg="white", width=40)
 entrySearch = tk.Entry(bg="white", width=30)
+toModify = tk.Entry(bg="white", width=30)
+theModification = tk.Entry(bg="white", width=30)
 
 
 signIn = tk.Button( text="Are you an admin? Sign in!", width=25, height=5, bg="white")
 signOut = tk.Button( text="Sign out", width=25, height=5, bg="white")
 confirmCred = tk.Button(text="Confirm", width=25, height=5, bg="white")
+updateEntry = tk.Button(text="Update", width=25, height=5, bg="Green")
+deleteEntry = tk.Button(text="Delete", width=25, height=5, bg="Red")
+toModifyBtn = tk.Button(text="Confirm", width=25, height=5, bg="white")
+theModificationBtn = tk.Button(text="Confirm", width=25, height=5, bg="white")
+
+
 searchButton = tk.Button(text="Search for title",width=25,height=5, bg="white")
 searchDev = tk.Button(text="Search for developer",width=25,height=5, bg="white")
 searchdata = tk.Button(text="Retrieve game data",width=25,height=5, bg="white")
@@ -338,6 +492,7 @@ result5 = tk.Button(width=25, height=5, bg="white")
 result6 = tk.Button(width=25, height=5, bg="white")
 result7 = tk.Button(width=25, height=5, bg="white")
 result8 = tk.Button(width=25, height=5, bg="white")
+
 inspectBackbtn = tk.Button(text = "Back", width=10, height=2, bg="white")
 
 leftPage = tk.Button(text = "<-", width=10, height=2, bg="white")
@@ -375,6 +530,11 @@ searchdata.bind("<Button-1>", handle_data_search)
 
 signIn.bind("<Button-1>", signInProc)
 signOut.bind("<Button-1>", signOutProc)
+
+updateEntry.bind("<Button-1>", listColumns)
+deleteEntry.bind("<Button-1>", deleteProcess)
+toModifyBtn.bind("<Button-1>", promptModification)
+theModificationBtn.bind("<Button-1>", updateProcess)
 
 
 confirmCred.bind("<Button-1>", checkCred)

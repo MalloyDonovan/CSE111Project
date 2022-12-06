@@ -5,7 +5,7 @@ from sqlite3 import Error
 searchingData = False
 searchingDevs = False
 searchingGames = False
-loggedin = True
+loggedin = False
 
 
 def openConnection(_dbFile):
@@ -152,8 +152,8 @@ def details(_conn):
 
         #Remove not relevant items, add a back button later
         if loggedin == True:                
-            deleteEntry.grid(row=4, column = 2)
-            updateEntry.grid(row=4, column = 1)
+            deleteEntry.grid(row=4, column = 3)
+            updateEntry.grid(row=4, column = 2)
         inspectBackbtn.grid(row=0, column=1)
         clearResults()
         leftPage.grid_remove()
@@ -258,6 +258,35 @@ def updateDB(_conn):
         _conn.execute("ROLLBACK")
         print(e)
 
+def insertDB(_conn):
+    try:
+        if searchingGames == True:
+            sql = ''' 
+                    INSERT INTO Games(g_id, g_title, g_mainStory, g_mainPlus, g_Completionist, g_allStyles, g_coop, g_versus, g_type, g_developers, g_publishers, g_platforms, g_genres, g_releaseNA, g_releaseEU, g_releaseJP)
+                    VALUES (68032,'{}',0,0,0,0,0,0,'None','None','None','None','None','None','None','None')
+                '''.format(insertEntry.get())
+            _conn.execute(sql)
+        elif searchingDevs == True:
+            sql = ''' 
+                    INSERT INTO gameDevs (gdev_developer, gdev_city, gdev_administrative_division, gdev_country, gdev_est, gdev_notable)
+                    VALUES ('{}', 'None', 'None', 'None', 'None', 'None')
+                '''.format(insertEntry.get())
+            _conn.execute(sql)
+        elif searchingData == True:
+            sql = ''' 
+                    INSERT INTO gameData (gd_name, gd_platform, gd_date, gd_score, gd_uscore, gd_developer, gd_genre, gd_players, gd_critics, gd_users)
+                    VALUES ('{}', 'None', 'None', 0, 0, 'None', 'None', 0, 0, 0)
+                '''.format(insertEntry.get())
+            _conn.execute(sql)
+
+        insertEntry.delete(0, 20)
+
+        _conn.execute("COMMIT")
+        print("success")
+    except Error as e:
+        _conn.execute("ROLLBACK")
+        print(e)
+
 
 ###Search related methods##########################################
 
@@ -351,6 +380,7 @@ def inspect_back(event):
     inspectBackbtn.grid_remove()
     detailsDisplay.grid_remove()
     deleteEntry.grid_remove()
+    updateEntry.grid_remove()
     executeSearch(event)
 
 def clearResults():
@@ -376,6 +406,7 @@ def checkCred(event):
         entryCred.grid_forget()
         confirmCred.grid_forget()
         signOut.grid(row=4, column=0)
+        insertEntryButton.grid(row=3, column=0)
         adminMessage.grid(row=3, column =0, sticky = "s")
 
      
@@ -385,7 +416,10 @@ def signInProc(event):
     confirmCred.grid(row=2, column=2, sticky="n")
 
 def signOutProc(event):
+    global loggedin
+    loggedin = False
     adminMessage.grid_forget()
+    insertEntryButton.grid_remove()
     signOut.grid_forget()
     signIn.grid(row=4, column=0)
 
@@ -434,6 +468,60 @@ def deleteProcess(event):
         deleteDB(conn)
         closeConnection(conn, database)
 
+def selectInsertType(event):
+    insertTypeText["text"] = "Select type to insert"
+    insertTypeText.grid(row=2,column=3)
+    insertType1.grid(row=3, column=2)
+    insertType2.grid(row=3, column=3)
+    insertType3.grid(row=3, column=4)
+
+def Type1(event):
+    global searchingData
+    global searchingDevs
+    global searchingGames 
+    searchingData = False
+    searchingDevs = False
+    searchingGames = True
+    insertPrompt()
+
+def Type2(event):
+    global searchingData
+    global searchingDevs
+    global searchingGames 
+    searchingData = False
+    searchingDevs = True
+    searchingGames = False
+    insertPrompt()
+
+
+def Type3(event):
+    global searchingData
+    global searchingDevs
+    global searchingGames 
+    searchingData = True
+    searchingDevs = False
+    searchingGames = False
+    insertPrompt()
+
+def insertPrompt():
+    insertType1.grid_remove()
+    insertType2.grid_remove()
+    insertType3.grid_remove()
+    insertTypeText.grid_remove()
+    insertPromptText["text"] = "Enter name of entry"
+    insertPromptText.grid(row=2, column = 2)
+    insertEntry.grid(row=3, column=2)
+    insertConfirm.grid(row=4, column=2)
+
+def insertProcess(event):
+        insertPromptText.grid_remove()
+        insertConfirm.grid_remove()
+        insertEntry.grid_remove()
+        database = r"videogames.db"
+        conn = openConnection(database)
+        insertDB(conn)
+        closeConnection(conn, database)
+
 
 ##################################################################
     
@@ -463,11 +551,14 @@ adminMessage = tk.Label(text="Welcome system administrator!")
 temporaryString = tk.Label()
 detailsDisplay = tk.Label()
 toBeModified = tk.Label()
+insertTypeText = tk.Label()
+insertPromptText = tk.Label()
 
 entryCred = tk.Entry(bg="white", width=40)
 entrySearch = tk.Entry(bg="white", width=30)
 toModify = tk.Entry(bg="white", width=30)
 theModification = tk.Entry(bg="white", width=30)
+insertEntry  = tk.Entry(bg="white", width=30)
 
 
 signIn = tk.Button( text="Are you an admin? Sign in!", width=25, height=5, bg="white")
@@ -475,9 +566,14 @@ signOut = tk.Button( text="Sign out", width=25, height=5, bg="white")
 confirmCred = tk.Button(text="Confirm", width=25, height=5, bg="white")
 updateEntry = tk.Button(text="Update", width=25, height=5, bg="Green")
 deleteEntry = tk.Button(text="Delete", width=25, height=5, bg="Red")
+insertEntryButton = tk.Button(text="Insert", width=25, height=5, bg="Yellow")
+insertConfirm = tk.Button(text="Confirm", width=25, height=5, bg="white")
 toModifyBtn = tk.Button(text="Confirm", width=25, height=5, bg="white")
 theModificationBtn = tk.Button(text="Confirm", width=25, height=5, bg="white")
 
+insertType1 = tk.Button(text="Games", width=10, height=2, bg="white")
+insertType2 = tk.Button(text="gameDev", width=10, height=2, bg="white")
+insertType3 = tk.Button(text="gameData", width=10, height=2, bg="white")
 
 searchButton = tk.Button(text="Search for title",width=25,height=5, bg="white")
 searchDev = tk.Button(text="Search for developer",width=25,height=5, bg="white")
@@ -533,8 +629,15 @@ signOut.bind("<Button-1>", signOutProc)
 
 updateEntry.bind("<Button-1>", listColumns)
 deleteEntry.bind("<Button-1>", deleteProcess)
+insertEntryButton.bind("<Button-1>", selectInsertType)
+insertConfirm.bind("<Button-1>", insertProcess)
 toModifyBtn.bind("<Button-1>", promptModification)
 theModificationBtn.bind("<Button-1>", updateProcess)
+
+insertType1.bind("<Button-1>", Type1)
+insertType2.bind("<Button-1>", Type2)
+insertType3.bind("<Button-1>", Type3)
+
 
 
 confirmCred.bind("<Button-1>", checkCred)
